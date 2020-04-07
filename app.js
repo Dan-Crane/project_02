@@ -85,7 +85,7 @@ const tasks = [
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
-    deleteBtn.classList.add("btn", "btn-danger", "ml-auto", "delete-btn");
+    deleteBtn.classList.add("btn", "btn-outline-danger", "ml-auto", "delete-btn");
 
     const article = document.createElement("p");
     article.textContent = body;
@@ -129,16 +129,27 @@ const tasks = [
   }
 
   //* функция удаления
-  
+  function deleteTask(id) {
+    const { title } = objOfTasks[id];
+    const isConfirm = confirm(`Удалить: '${title}'`);
+    if (!isConfirm) return isConfirm;
+    delete objOfTasks[id];
+    return isConfirm;
+  }
+
+  //* удаление таски со страницы
+  function deleteTaskFromHtml(confirmed, el) {
+    if (!confirmed) return;
+    el.remove();
+  }
 
   //* событие кноки (удалить)
   function onListContainerDeleteHandler({ target }) {
     if (target.classList.contains("delete-btn")) {
-      const parent = target.closest('[data-task-id]');
-      const id = parent.dataset.taskId
-
-
-      // const isConfirm = confirm("Вы уверены?");
+      const parent = target.closest("[data-task-id]");
+      const id = parent.dataset.taskId;
+      const confirmed = deleteTask(id);
+      deleteTaskFromHtml(confirmed, parent);
     }
   }
 })(tasks);
