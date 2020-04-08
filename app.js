@@ -134,7 +134,7 @@ const tasks = [
     listContainer.append(fragment);
   }
 
-  //! * список задач пуст
+  // * список задач пуст
   function taskListIsEmpty() {
     let div = document.createElement("div");
     if (Object.keys(objOfTasks).length == 0) {
@@ -146,8 +146,8 @@ const tasks = [
     }
 
     if (!Object.keys(objOfTasks).length == 0) {
-      let divRemove = document.querySelector(".div-del")
-      if (!divRemove) return
+      let divRemove = document.querySelector(".div-del");
+      if (!divRemove) return;
       divRemove.remove();
     }
   }
@@ -155,11 +155,13 @@ const tasks = [
   form.addEventListener("submit", onFormSubmitHandler);
   //* событие на удаление таски
   listContainer.addEventListener("click", onListContainerDeleteHandler);
-  //*событие на смену темы
+  //* событие на смену темы
   themeSelect.addEventListener("change", onThemeSelectHandler);
+  //* событие на checkbox
+  listContainer.addEventListener("click", swithsCheckbox);
 
   //* Создает дом элемент для рендера задач
-  function listItemTemplate({ _id, title, body }) {
+  function listItemTemplate({ _id, title, body, completed }) {
     const li = document.createElement("li");
     li.classList.add(
       "list-group-item",
@@ -173,18 +175,25 @@ const tasks = [
     const span = document.createElement("span");
     span.textContent = title;
     span.style.fontWeight = "bold";
+    span.classList.add("col-11");
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.classList.add("btn", "btn-danger", "ml-auto", "delete-btn");
+
+    const checkBtn = document.createElement("INPUT");
+    checkBtn.setAttribute("type", "checkbox");
+    checkBtn.classList.add("mr-auto", "col-1", "checkBtn");
+    checkBtn.checked = completed;
 
     const article = document.createElement("p");
     article.textContent = body;
     article.classList.add("mt-2", "w-100");
 
     li.append(span);
-    li.append(deleteBtn);
+    li.append(checkBtn);
     li.append(article);
+    li.append(deleteBtn);
 
     return li;
   }
@@ -266,5 +275,22 @@ const tasks = [
     Object.entries(selectedThemeObj).forEach(([key, value]) => {
       document.documentElement.style.setProperty(key, value);
     });
+  }
+
+  //* событие checkbox
+  function swithsCheckbox({ target }) {
+    if (target.classList.contains("checkBtn")) {
+      changeCheckbox(target.checked);
+    }
+  }
+
+  //* функция смены chekbox
+
+  function changeCheckbox(checked) {
+    if (!checked) {
+      console.log("bue");
+      return;
+    }
+      console.log("hi");
   }
 })(tasks);
