@@ -105,7 +105,7 @@ const tasks = [
     },
   };
   //* не дает менять в холостую селект при отмене
-  let lastSelectedTheme = "Theme Default";
+  let lastSelectedTheme = "default";
 
   //! elements UI
   const listContainer = document.querySelector(
