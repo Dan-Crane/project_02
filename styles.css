@@ -1,4 +1,5 @@
 :root {
+  --li-bg-color: rgba(0, 123, 255, 0.25);
   --base-text-color: #212529;
   --header-bg: #007bff;
   --header-text-color: #fff;
@@ -104,3 +105,14 @@ body {
 .checkBtn:checked[type="checkbox"]::before {
   left: 25px;
 }
+
+/* * checkbox li style */
+.check-li {
+  background-color: var(--li-bg-color);
+  transition: 0.2s;
+}
+
+.check-li-no {
+  transition: 0.2s;
+}
+

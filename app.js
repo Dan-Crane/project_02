@@ -40,6 +40,7 @@ const tasks = [
 
   const themes = {
     default: {
+      '--li-bg-color': 'rgba(0, 123, 255, 0.25)',
       "--base-text-color": "#212529",
       "--header-bg": "#007bff",
       "--header-text-color": "#fff",
@@ -60,6 +61,7 @@ const tasks = [
       "--input-focus-box-shadow": "0 0 0 0.2rem rgba(0, 123, 255, 0.25)",
     },
     dark: {
+      '--li-bg-color': 'rgba(88, 97, 107, 1)',
       "--base-text-color": "#212529",
       "--header-bg": "#343a40",
       "--header-text-color": "#fff",
@@ -82,6 +84,7 @@ const tasks = [
       "--input-focus-box-shadow": "0 0 0 0.2rem rgba(141, 143, 146, 0.25)",
     },
     light: {
+      '--li-bg-color': 'rgba(198, 198, 198, .5)',
       "--base-text-color": "#212529",
       "--header-bg": "#fff",
       "--header-text-color": "#212529",
@@ -168,7 +171,8 @@ const tasks = [
       "d-flex",
       "align-items-center",
       "flex-wrap",
-      "mt-2"
+      "mt-2",
+      "li-del"
     );
     li.dataset.taskId = _id;
 
@@ -183,8 +187,9 @@ const tasks = [
 
     const checkBtn = document.createElement("INPUT");
     checkBtn.setAttribute("type", "checkbox");
-    checkBtn.classList.add("mr-auto", "col-1", "checkBtn");
+    checkBtn.classList.add("mr-auto", "checkBtn");
     checkBtn.checked = completed;
+    changeCheckbox(completed, li)
 
     const article = document.createElement("p");
     article.textContent = body;
@@ -280,17 +285,21 @@ const tasks = [
   //* событие checkbox
   function swithsCheckbox({ target }) {
     if (target.classList.contains("checkBtn")) {
-      changeCheckbox(target.checked);
+      const checkLi = target.closest(".li-del");
+      const checkChecked = target.checked;
+      changeCheckbox(checkChecked, checkLi)
     }
   }
 
-  //* функция смены chekbox
-
-  function changeCheckbox(checked) {
+  //* функция смены checkbox
+  function changeCheckbox(checked, li) {
     if (!checked) {
-      console.log("bue");
+      li.classList.remove("check-li");
+      li.classList.add('check-li-no')
       return;
     }
-      console.log("hi");
+    li.classList.remove('check-li-no')
+    li.classList.add("check-li");
   }
+
 })(tasks);
