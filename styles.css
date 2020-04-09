@@ -29,6 +29,8 @@ body {
 }
 
 .header .navbar-brand {
+  font-size: 32px;
+  font-weight: 900;
   color: var(--header-text-color) !important;
 }
 

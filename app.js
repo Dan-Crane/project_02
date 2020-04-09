@@ -40,7 +40,7 @@ const tasks = [
 
   const themes = {
     default: {
-      '--li-bg-color': 'rgba(0, 123, 255, 0.25)',
+      "--li-bg-color": "rgba(0, 123, 255, 0.25)",
       "--base-text-color": "#212529",
       "--header-bg": "#007bff",
       "--header-text-color": "#fff",
@@ -61,7 +61,7 @@ const tasks = [
       "--input-focus-box-shadow": "0 0 0 0.2rem rgba(0, 123, 255, 0.25)",
     },
     dark: {
-      '--li-bg-color': 'rgba(88, 97, 107, 1)',
+      "--li-bg-color": "rgba(88, 97, 107, 1)",
       "--base-text-color": "#212529",
       "--header-bg": "#343a40",
       "--header-text-color": "#fff",
@@ -84,7 +84,7 @@ const tasks = [
       "--input-focus-box-shadow": "0 0 0 0.2rem rgba(141, 143, 146, 0.25)",
     },
     light: {
-      '--li-bg-color': 'rgba(198, 198, 198, .5)',
+      "--li-bg-color": "rgba(198, 198, 198, .5)",
       "--base-text-color": "#212529",
       "--header-bg": "#fff",
       "--header-text-color": "#212529",
@@ -118,6 +118,8 @@ const tasks = [
   const inputTitle = form.elements["title"];
   const inputBody = form.elements["body"];
   const themeSelect = document.querySelector("#themeSelect");
+  const btnAllTasks = document.querySelector(".btn-all-tasks");
+  const btnCompletedTasks = document.querySelector(".btn-completed-tasks");
 
   //! events
   renderAllTasks(objOfTasks);
@@ -128,7 +130,7 @@ const tasks = [
       return;
     }
 
-    const fragment = document.createDocumentFragment();
+    let fragment = document.createDocumentFragment();
     Object.values(tasksList).forEach((task) => {
       const li = listItemTemplate(task);
       fragment.append(li);
@@ -162,6 +164,10 @@ const tasks = [
   themeSelect.addEventListener("change", onThemeSelectHandler);
   //* событие на checkbox
   listContainer.addEventListener("click", swithsCheckbox);
+  //* событие на AllTasks
+  btnAllTasks.addEventListener("click", showAllTaks);
+  //* событие на ComplatedTasks
+  btnCompletedTasks.addEventListener("click", showCompletedTasks);
 
   //* Создает дом элемент для рендера задач
   function listItemTemplate({ _id, title, body, completed }) {
@@ -187,9 +193,9 @@ const tasks = [
 
     const checkBtn = document.createElement("INPUT");
     checkBtn.setAttribute("type", "checkbox");
-    checkBtn.classList.add("mr-auto", "checkBtn");
+    checkBtn.classList.add("ml-auto", "checkBtn");
     checkBtn.checked = completed;
-    changeCheckbox(completed, li)
+    changeCheckboxClass(completed, li);
 
     const article = document.createElement("p");
     article.textContent = body;
@@ -221,6 +227,7 @@ const tasks = [
     taskListIsEmpty();
   }
 
+  //* функция добавления
   function createNewTask(title, body) {
     const nevTask = {
       _id: `task-${Math.random()}`,
@@ -287,19 +294,61 @@ const tasks = [
     if (target.classList.contains("checkBtn")) {
       const checkLi = target.closest(".li-del");
       const checkChecked = target.checked;
-      changeCheckbox(checkChecked, checkLi)
+      changeCheckboxClass(checkChecked, checkLi);
+
+
+      checkObjCompleted(checkChecked, checkLi)
     }
   }
 
-  //* функция смены checkbox
-  function changeCheckbox(checked, li) {
+  //* фуеция меняет Obj.completed
+  function checkObjCompleted (checked, target) {
+    const getIdLi = target.getAttribute('data-task-id')
+    
+    const changeCheckboxInObj = Object.values(objOfTasks).filter(task => {
+      return(task._id == getIdLi)
+    })
+    changeCheckboxInObj.forEach(elem =>{
+      elem.completed = checked
+    })
+  }
+
+  //* функция смены класса checkbox
+  function changeCheckboxClass(checked, li) {
     if (!checked) {
       li.classList.remove("check-li");
-      li.classList.add('check-li-no')
+      li.classList.add("check-li-no");
       return;
     }
-    li.classList.remove('check-li-no')
+    li.classList.remove("check-li-no");
     li.classList.add("check-li");
   }
 
+  //* функция показывает все задачи showAllTaks
+  function showAllTaks(e) {
+    const listUl = document.querySelector(".list-group");
+    while (listUl.firstChild) {
+      listUl.removeChild(listUl.firstChild);
+    }
+    renderAllTasks(objOfTasks);
+  }
+
+  //* функция показывает выполненные задачи showCompletedTasks
+  function showCompletedTasks(e) {
+    const listUl = document.querySelector(".list-group");
+    while (listUl.firstChild) {
+      listUl.removeChild(listUl.firstChild);
+    }
+
+    let objectComplate = Object.values(objOfTasks).filter((item) => {
+      return item.completed == true;
+    });
+
+    renderAllTasks(objectComplate);
+  }
+
+  //* рендер выполненных tasks
+  function renderCompletedTasks(tasksList) {
+    const fragmentComplateTasks = document.createDocumentFragment();
+  }
 })(tasks);
