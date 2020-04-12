@@ -108,7 +108,7 @@ const tasks = [
     },
   };
   //* не дает менять в холостую селект при отмене
-  let lastSelectedTheme = "default";
+  let lastSelectedTheme = localStorage.getItem("app_them") || "default";
 
   //! elements UI
   const listContainer = document.querySelector(
@@ -122,6 +122,7 @@ const tasks = [
   const btnCompletedTasks = document.querySelector(".btn-completed-tasks");
 
   //! events
+  setTheme(lastSelectedTheme);
   renderAllTasks(objOfTasks);
   //* 2. Рендер всех задач на страницу. Вызов вверху. Для удобства читения.
   function renderAllTasks(tasksList) {
@@ -279,6 +280,7 @@ const tasks = [
     }
     setTheme(selectedTheme);
     lastSelectedTheme = selectedTheme;
+    localStorage.setItem("app_them", selectedTheme);
   }
 
   //* функция смены темы
@@ -296,21 +298,20 @@ const tasks = [
       const checkChecked = target.checked;
       changeCheckboxClass(checkChecked, checkLi);
 
-
-      checkObjCompleted(checkChecked, checkLi)
+      checkObjCompleted(checkChecked, checkLi);
     }
   }
 
   //* фуеция меняет Obj.completed
-  function checkObjCompleted (checked, target) {
-    const getIdLi = target.getAttribute('data-task-id')
-    
-    const changeCheckboxInObj = Object.values(objOfTasks).filter(task => {
-      return(task._id == getIdLi)
-    })
-    changeCheckboxInObj.forEach(elem =>{
-      elem.completed = checked
-    })
+  function checkObjCompleted(checked, target) {
+    const getIdLi = target.getAttribute("data-task-id");
+
+    const changeCheckboxInObj = Object.values(objOfTasks).filter((task) => {
+      return task._id == getIdLi;
+    });
+    changeCheckboxInObj.forEach((elem) => {
+      elem.completed = checked;
+    });
   }
 
   //* функция смены класса checkbox
